@@ -1,8 +1,6 @@
 package com.projectsky.IT_ch_backend.controller;
 
-import com.projectsky.IT_ch_backend.dto.CourseCreateRequest;
-import com.projectsky.IT_ch_backend.dto.CourseDto;
-import com.projectsky.IT_ch_backend.dto.CourseShortDto;
+import com.projectsky.IT_ch_backend.dto.*;
 import com.projectsky.IT_ch_backend.service.CourseService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -35,11 +33,27 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseById(courseId, userId));
     }
 
+    @GetMapping("/{courseId}/participants")
+    public ResponseEntity<List<CourseParticipantDto>> getCourseParticipants(
+            @PathVariable Long courseId
+    ) {
+        return ResponseEntity.ok(courseService.getParticipants(courseId));
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Void> createCourse(
             @RequestBody @Validated CourseCreateRequest request
     ){
         courseService.createCourse(request, 1L);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/{courseId}/participants")
+    public ResponseEntity<Void> addParticipantToCourse(
+            @PathVariable Long courseId,
+            @RequestBody AddParticipantsRequest request
+            ) {
+        courseService.addParticipants(courseId, request.userIds());
+        return ResponseEntity.ok().build();
     }
 }

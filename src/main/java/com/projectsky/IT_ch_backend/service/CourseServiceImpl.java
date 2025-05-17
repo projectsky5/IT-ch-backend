@@ -12,6 +12,7 @@ import com.projectsky.IT_ch_backend.model.*;
 import com.projectsky.IT_ch_backend.repository.CourseRepository;
 import com.projectsky.IT_ch_backend.repository.CourseUserRepository;
 import com.projectsky.IT_ch_backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -80,6 +81,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void createCourse(CourseCreateRequest request, Long currentUserId) {
         User user = userRepository.findById(currentUserId)
                 .orElseThrow(() -> new RuntimeException("<UNK> <UNK> <UNK> <UNK> <UNK> <UNK>"));
@@ -102,6 +104,38 @@ public class CourseServiceImpl implements CourseService {
         return courseUserRepository.findByUserId(userId)
                 .stream()
                 .map(courseShortMapper::toDto)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public void addParticipants(Long courseId, List<Long> userIds) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        List<User> users = userRepository.findAllById(userIds);
+
+        List<CourseUser> courseUsers = users.stream()
+                .map(user -> new CourseUser(
+                        new CourseUserId(course.getId(), user.getId()),
+                        course,
+                        user,
+                        user.getRole()
+                ))
+                .toList();
+
+        courseUserRepository.saveAll(courseUsers);
+    }
+
+    @Override
+    public List<CourseParticipantDto> getParticipants(Long courseId) {
+        return courseUserRepository.findByCourse_Id(courseId)
+                .stream()
+                .map(cu -> new CourseParticipantDto(
+                        cu.getUser().getId(),
+                        cu.getUser().getFullName(),
+                        cu.getCourseRole().name()
+                ))
                 .toList();
     }
 }
