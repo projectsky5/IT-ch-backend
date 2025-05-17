@@ -6,20 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "solutions")
+@Table(name = "homework_completions")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class Solution {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@IdClass(HomeworkCompletionId.class)
+public class HomeworkCompletion {
 
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Id
     @ManyToOne
     @JoinColumn(name = "homework_id")
     private Homework homework;
 
-    private String title;
-    private String refToGoogleForm;
-
+    private boolean completed;
 }

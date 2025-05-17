@@ -3,6 +3,7 @@ package com.projectsky.IT_ch_backend.controller;
 import com.projectsky.IT_ch_backend.dto.CreateVideoRecordRequest;
 import com.projectsky.IT_ch_backend.dto.VideoRecordDto;
 import com.projectsky.IT_ch_backend.service.RecordService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,6 @@ public class VideoRecordController {
             @RequestBody CreateVideoRecordRequest request
             ) {
         recordService.addRecordToCourse(courseId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

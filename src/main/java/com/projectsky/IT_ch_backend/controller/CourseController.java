@@ -54,6 +54,6 @@ public class CourseController {
             @RequestBody AddParticipantsRequest request
             ) {
         courseService.addParticipants(courseId, request.userIds());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

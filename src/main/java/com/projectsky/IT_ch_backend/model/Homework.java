@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "homeworks")
@@ -17,21 +16,19 @@ import java.util.List;
 public class Homework {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @MapsId
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
 
     private String title;
     private LocalDate deadline;
+
     private String refToSolution;
-
-    @OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Solution> solutions;
-
-    private Completion completion; // enumType
+    private String refToSubmitFrom;
+    private String refToSolutionView;
 
 }
 
