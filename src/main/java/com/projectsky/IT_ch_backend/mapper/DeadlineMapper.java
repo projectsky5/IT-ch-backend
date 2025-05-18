@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.mapper;
 
-import com.projectsky.IT_ch_backend.dto.DeadlineDto;
+import com.projectsky.IT_ch_backend.dto.deadline.DeadlineDto;
 import com.projectsky.IT_ch_backend.model.Homework;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,8 +1,8 @@
 package com.projectsky.IT_ch_backend.mapper;
 
-import com.projectsky.IT_ch_backend.dto.CreateHomeworkRequest;
-import com.projectsky.IT_ch_backend.dto.HomeworkDtoForStudent;
-import com.projectsky.IT_ch_backend.dto.HomeworkDtoForTeacher;
+import com.projectsky.IT_ch_backend.dto.homework.CreateHomeworkRequest;
+import com.projectsky.IT_ch_backend.dto.homework.HomeworkDtoForStudent;
+import com.projectsky.IT_ch_backend.dto.homework.HomeworkDtoForTeacher;
 import com.projectsky.IT_ch_backend.model.Course;
 import com.projectsky.IT_ch_backend.model.Homework;
 import org.mapstruct.*;

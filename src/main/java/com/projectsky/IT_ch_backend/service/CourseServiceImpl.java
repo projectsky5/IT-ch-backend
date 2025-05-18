@@ -1,13 +1,8 @@
 package com.projectsky.IT_ch_backend.service;
 
-import com.projectsky.IT_ch_backend.dto.*;
-import com.projectsky.IT_ch_backend.enums.Frequency;
+import com.projectsky.IT_ch_backend.dto.course.*;
 import com.projectsky.IT_ch_backend.enums.Role;
-import com.projectsky.IT_ch_backend.enums.Weekday;
-import com.projectsky.IT_ch_backend.mapper.CourseCreateRequestMapper;
-import com.projectsky.IT_ch_backend.mapper.CourseMapper;
-import com.projectsky.IT_ch_backend.mapper.CourseShortMapper;
-import com.projectsky.IT_ch_backend.mapper.ScheduleMapper;
+import com.projectsky.IT_ch_backend.mapper.course.*;
 import com.projectsky.IT_ch_backend.model.*;
 import com.projectsky.IT_ch_backend.repository.CourseRepository;
 import com.projectsky.IT_ch_backend.repository.CourseUserRepository;
@@ -16,7 +11,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -24,29 +18,30 @@ public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
     private final CourseUserRepository courseUserRepository;
-    private final CourseMapper courseMapper;
-    private final ScheduleMapper scheduleMapper;
     private final UserRepository userRepository;
     private final CourseCreateRequestMapper courseCreateRequestMapper;
     private final CourseShortMapper courseShortMapper;
+    private final CoursePatchMapper coursePatchMapper;
+    private final CourseOnlyMapper courseOnlyMapper;
 
     public CourseServiceImpl(CourseRepository courseRepository,
-                             CourseMapper courseMapper,
-                             ScheduleMapper scheduleMapper,
                              CourseUserRepository courseUserRepository,
                              UserRepository userRepository,
-                             CourseCreateRequestMapper courseCreateRequestMapper, CourseShortMapper courseShortMapper) {
+                             CourseCreateRequestMapper courseCreateRequestMapper,
+                             CourseShortMapper courseShortMapper,
+                             CoursePatchMapper coursePatchMapper,
+                             CourseOnlyMapper courseOnlyMapper) {
         this.courseRepository = courseRepository;
-        this.courseMapper = courseMapper;
-        this.scheduleMapper = scheduleMapper;
         this.courseUserRepository = courseUserRepository;
         this.userRepository = userRepository;
         this.courseCreateRequestMapper = courseCreateRequestMapper;
         this.courseShortMapper = courseShortMapper;
+        this.coursePatchMapper = coursePatchMapper;
+        this.courseOnlyMapper = courseOnlyMapper;
     }
 
     @Override
-    public CourseDto getCourseById(Long courseId, Long currentUserId) throws ChangeSetPersister.NotFoundException {
+    public CourseOnlyDto getCourseById(Long courseId, Long currentUserId) throws ChangeSetPersister.NotFoundException {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found")); // notfoundex
 
@@ -65,17 +60,14 @@ public class CourseServiceImpl implements CourseService {
         String courseRole = courseUser.getCourseRole().name();
         String teacherName = course.getCreator().getFullName();
 
-        ScheduleDto scheduleDto = scheduleMapper.toDto(course.getSchedule());
-
-        return new CourseDto(
+        return new CourseOnlyDto(
                 course.getCourseName(),
                 course.getLocation(),
                 course.getRefToChat(),
                 course.getRefToGrades(),
                 duration,
                 courseRole,
-                teacherName,
-                scheduleDto
+                teacherName
         );
 
     }
@@ -137,5 +129,44 @@ public class CourseServiceImpl implements CourseService {
                         cu.getCourseRole().name()
                 ))
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCourse(Long courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        courseRepository.delete(course);
+    }
+
+    @Override
+    @Transactional
+    public CourseOnlyDto updateCourse(Long courseId, CoursePatchRequest request) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found"));
+
+        coursePatchMapper.patchCourse(course, request);
+
+        DurationRange duration = request.getDuration();
+
+        if(duration != null){
+            course.setStartModule(duration.start());
+            course.setEndModule(duration.end());
+        }
+
+        return courseOnlyMapper.toDto(course);
+    }
+
+    @Override
+    @Transactional
+    public List<CourseParticipantDto> updateCourseRole(Long courseId, Long userId, Role newRole) {
+        CourseUser courseUser = courseUserRepository
+                .findByCourse_IdAndUser_id(courseId, userId)
+                .orElseThrow(() -> new RuntimeException("<UNK> <UNK> <UNK> <UNK> <UNK>"));
+
+        courseUser.setCourseRole(newRole);
+
+        return getParticipants(courseId);
     }
 }

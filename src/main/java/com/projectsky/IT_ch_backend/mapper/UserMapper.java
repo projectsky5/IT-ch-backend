@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.mapper;
 
-import com.projectsky.IT_ch_backend.dto.UserDto;
+import com.projectsky.IT_ch_backend.dto.user.UserDto;
 import com.projectsky.IT_ch_backend.model.User;
 import org.mapstruct.Mapper;
 

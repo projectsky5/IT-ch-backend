@@ -1,7 +1,8 @@
 package com.projectsky.IT_ch_backend.service;
 
-import com.projectsky.IT_ch_backend.dto.CreateVideoRecordRequest;
-import com.projectsky.IT_ch_backend.dto.VideoRecordDto;
+import com.projectsky.IT_ch_backend.dto.video_record.CreateVideoRecordRequest;
+import com.projectsky.IT_ch_backend.dto.video_record.PatchVideoRecordRequest;
+import com.projectsky.IT_ch_backend.dto.video_record.VideoRecordDto;
 import com.projectsky.IT_ch_backend.mapper.RecordMapper;
 import com.projectsky.IT_ch_backend.model.Course;
 import com.projectsky.IT_ch_backend.model.VideoRecord;
@@ -43,6 +44,27 @@ public class RecordServiceImpl implements RecordService {
         record.setCourse(course);
 
         recordRepository.save(record);
+
+    }
+
+    @Override
+    public void deleteRecordById(Long recordId) {
+        if(!recordRepository.existsById(recordId)) {
+            throw new RuntimeException("Record not found");
+        }
+        recordRepository.deleteById(recordId);
+    }
+
+    @Override
+    @Transactional
+    public VideoRecordDto updateRecordById(Long recordId, PatchVideoRecordRequest request) {
+        VideoRecord record = recordRepository.findById(recordId)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
+
+        request.getTitle().ifPresent(record::setTitle);
+        request.getRefToVideo().ifPresent(record::setRefToVideo);
+
+        return recordMapper.toDto(record);
 
     }
 }

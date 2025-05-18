@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.service;
 
-import com.projectsky.IT_ch_backend.dto.DeadlineDto;
+import com.projectsky.IT_ch_backend.dto.deadline.DeadlineDto;
 
 import java.util.List;
 

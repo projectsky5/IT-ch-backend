@@ -1,16 +1,12 @@
-package com.projectsky.IT_ch_backend.dto;
+package com.projectsky.IT_ch_backend.dto.course;
 
-
-public record CourseDto(
+public record CourseOnlyDto(
         String courseName,
         String location,
         String refToChat,
         String refToGrades,
         DurationRange duration,
-
         String courseRole,
-        String teacherName,
-
-        ScheduleDto schedule
+        String teacherName
 ) {
 }

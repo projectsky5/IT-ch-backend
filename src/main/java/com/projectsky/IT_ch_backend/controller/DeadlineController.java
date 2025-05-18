@@ -1,7 +1,7 @@
 package com.projectsky.IT_ch_backend.controller;
 
-import com.projectsky.IT_ch_backend.dto.DeadlineDto;
-import com.projectsky.IT_ch_backend.dto.UpdateCompletionRequest;
+import com.projectsky.IT_ch_backend.dto.deadline.DeadlineDto;
+import com.projectsky.IT_ch_backend.dto.deadline.UpdateCompletionRequest;
 import com.projectsky.IT_ch_backend.service.DeadlineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

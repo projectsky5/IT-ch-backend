@@ -1,4 +1,4 @@
-package com.projectsky.IT_ch_backend.dto;
+package com.projectsky.IT_ch_backend.dto.homework;
 
 import java.time.LocalDate;
 

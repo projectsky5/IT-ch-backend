@@ -1,6 +1,6 @@
-package com.projectsky.IT_ch_backend.mapper;
+package com.projectsky.IT_ch_backend.mapper.course;
 
-import com.projectsky.IT_ch_backend.dto.CourseShortDto;
+import com.projectsky.IT_ch_backend.dto.course.CourseShortDto;
 import com.projectsky.IT_ch_backend.model.CourseUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

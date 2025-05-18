@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.controller;
 
-import com.projectsky.IT_ch_backend.dto.AvailableUserDto;
+import com.projectsky.IT_ch_backend.dto.user.AvailableUserDto;
 import com.projectsky.IT_ch_backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

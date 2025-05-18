@@ -1,12 +1,12 @@
-package com.projectsky.IT_ch_backend.dto;
+package com.projectsky.IT_ch_backend.dto.homework;
 
 import java.time.LocalDate;
 
-public record HomeworkDtoForTeacher(
-        Long id,
+public record CreateHomeworkRequest(
         String title,
         LocalDate deadline,
         String refToHomework,
+        String refToSubmitForm,
         String refToSolutionView
 ) {
 }

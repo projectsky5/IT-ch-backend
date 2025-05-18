@@ -1,6 +1,7 @@
-package com.projectsky.IT_ch_backend.mapper;
+package com.projectsky.IT_ch_backend.mapper.course;
 
-import com.projectsky.IT_ch_backend.dto.CourseCreateRequest;
+import com.projectsky.IT_ch_backend.dto.course.CourseCreateRequest;
+import com.projectsky.IT_ch_backend.mapper.schedule.ScheduleMapper;
 import com.projectsky.IT_ch_backend.model.Course;
 import com.projectsky.IT_ch_backend.model.User;
 import org.mapstruct.*;

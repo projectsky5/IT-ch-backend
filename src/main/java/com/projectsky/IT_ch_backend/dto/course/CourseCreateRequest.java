@@ -1,4 +1,6 @@
-package com.projectsky.IT_ch_backend.dto;
+package com.projectsky.IT_ch_backend.dto.course;
+
+import com.projectsky.IT_ch_backend.dto.schedule.ScheduleDto;
 
 public record CourseCreateRequest(
         String courseName,

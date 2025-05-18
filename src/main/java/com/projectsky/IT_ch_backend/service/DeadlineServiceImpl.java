@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.service;
 
-import com.projectsky.IT_ch_backend.dto.DeadlineDto;
+import com.projectsky.IT_ch_backend.dto.deadline.DeadlineDto;
 import com.projectsky.IT_ch_backend.mapper.DeadlineMapper;
 import com.projectsky.IT_ch_backend.model.CourseUser;
 import com.projectsky.IT_ch_backend.model.Homework;
@@ -13,7 +13,6 @@ import com.projectsky.IT_ch_backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DeadlineServiceImpl implements DeadlineService {

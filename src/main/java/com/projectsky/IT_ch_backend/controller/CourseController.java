@@ -1,6 +1,6 @@
 package com.projectsky.IT_ch_backend.controller;
 
-import com.projectsky.IT_ch_backend.dto.*;
+import com.projectsky.IT_ch_backend.dto.course.*;
 import com.projectsky.IT_ch_backend.service.CourseService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class CourseController {
     }
 
     @GetMapping("/{courseId}/{userId}")
-    public ResponseEntity<CourseDto> getCourseById(@PathVariable Long courseId,
+    public ResponseEntity<CourseOnlyDto> getCourseById(@PathVariable Long courseId,
                                                    @PathVariable Long userId) throws ChangeSetPersister.NotFoundException {
         return ResponseEntity.ok(courseService.getCourseById(courseId, userId));
     }
@@ -55,5 +55,20 @@ public class CourseController {
             ) {
         courseService.addParticipants(courseId, request.userIds());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PatchMapping("/{courseId}/patch")
+    public ResponseEntity<CourseOnlyDto> updateCourse(
+            @PathVariable Long courseId,
+            @RequestBody CoursePatchRequest request
+    ) {
+        CourseOnlyDto updatedCourse = courseService.updateCourse(courseId, request);
+        return ResponseEntity.ok(updatedCourse);
+    }
+
+    @DeleteMapping("/{courseId}/delete")
+    public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId) {
+        courseService.deleteCourse(courseId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

@@ -1,6 +1,4 @@
-package com.projectsky.IT_ch_backend.dto;
-
-import java.time.LocalTime;
+package com.projectsky.IT_ch_backend.dto.schedule;
 
 public record ScheduleDto(
         String dayOfWeek,

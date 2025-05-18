@@ -1,6 +1,6 @@
-package com.projectsky.IT_ch_backend.mapper;
+package com.projectsky.IT_ch_backend.mapper.schedule;
 
-import com.projectsky.IT_ch_backend.dto.ScheduleDto;
+import com.projectsky.IT_ch_backend.dto.schedule.ScheduleDto;
 import com.projectsky.IT_ch_backend.enums.Frequency;
 import com.projectsky.IT_ch_backend.enums.Weekday;
 import com.projectsky.IT_ch_backend.model.Schedule;

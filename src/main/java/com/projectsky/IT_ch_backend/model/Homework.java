@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "homeworks")
@@ -22,6 +23,9 @@ public class Homework {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @OneToMany(mappedBy = "homework", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HomeworkCompletion> completions;
 
     private String title;
     private LocalDate deadline;
