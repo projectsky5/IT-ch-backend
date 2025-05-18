@@ -6,6 +6,7 @@ import com.projectsky.IT_ch_backend.enums.Weekday;
 import com.projectsky.IT_ch_backend.model.Schedule;
 import org.mapstruct.Mapper;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Mapper(componentModel = "spring")
@@ -15,7 +16,8 @@ public interface ScheduleMapper {
                 schedule.getDayOfWeek().getDisplay(),
                 schedule.getAcademicHours(),
                 schedule.getStartTime().toString(),
-                schedule.getFrequency().getDisplay()
+                schedule.getFrequency().getDisplay(),
+                schedule.getStartDate().toString()
         );
     }
     default Schedule toEntity(ScheduleDto dto){
@@ -24,7 +26,8 @@ public interface ScheduleMapper {
                 Frequency.fromDisplay(dto.frequency()),
                 dto.academicHours(),
                 Weekday.fromDisplay(dto.dayOfWeek()),
-                LocalTime.parse(dto.startTime())
+                LocalTime.parse(dto.startTime()),
+                LocalDate.parse(dto.startDate())
         );
     }
 }

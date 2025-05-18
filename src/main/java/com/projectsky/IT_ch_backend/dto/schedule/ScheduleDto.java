@@ -4,6 +4,7 @@ public record ScheduleDto(
         String dayOfWeek,
         Integer academicHours,
         String startTime,
-        String frequency
+        String frequency,
+        String startDate
 ) {
 }

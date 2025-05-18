@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
@@ -28,5 +29,7 @@ public class Schedule {
     private Weekday dayOfWeek;
 
     private LocalTime startTime;
+
+    private LocalDate startDate;
 
 }

@@ -6,6 +6,15 @@ public class SchedulePatchDto {
     private Integer academicHours ;
     private String dayOfWeek ;
     private String startTime ;
+    private String startDate ;
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
 
     public String getFrequency() {
         return frequency;
