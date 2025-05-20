@@ -22,7 +22,6 @@ public class User {
     private String imageUrl;
 
     private String email;
-    private String password; //hash
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CourseUser> courseUsers;

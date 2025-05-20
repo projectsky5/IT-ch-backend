@@ -2,6 +2,7 @@ package com.projectsky.IT_ch_backend.controller;
 
 import com.projectsky.IT_ch_backend.dto.course.*;
 import com.projectsky.IT_ch_backend.service.CourseService;
+import com.projectsky.IT_ch_backend.service.CurrentUserService;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,21 +16,24 @@ import java.util.List;
 public class CourseController {
 
     private final CourseService courseService;
+    private final CurrentUserService currentUserService;
 
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService,
+                            CurrentUserService currentUserService) {
         this.courseService = courseService;
+        this.currentUserService = currentUserService;
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseShortDto>> getCoursesForUser(
-            @RequestParam Long userId
-    ) {
+    public ResponseEntity<List<CourseShortDto>> getCoursesForUser() {
+        Long userId = currentUserService.getCurrentUser().getId();
         return ResponseEntity.ok(courseService.getAllShortCoursesForUser(userId));
     }
 
-    @GetMapping("/{courseId}/{userId}")
-    public ResponseEntity<CourseOnlyDto> getCourseById(@PathVariable Long courseId,
-                                                   @PathVariable Long userId) throws ChangeSetPersister.NotFoundException {
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseOnlyDto> getCourseById(@PathVariable Long courseId
+                                                   ) throws ChangeSetPersister.NotFoundException {
+        Long userId = currentUserService.getCurrentUser().getId();
         return ResponseEntity.ok(courseService.getCourseById(courseId, userId));
     }
 
@@ -44,7 +48,8 @@ public class CourseController {
     public ResponseEntity<Void> createCourse(
             @RequestBody @Validated CourseCreateRequest request
     ){
-        courseService.createCourse(request, 1L);
+        Long userId = currentUserService.getCurrentUser().getId();
+        courseService.createCourse(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
