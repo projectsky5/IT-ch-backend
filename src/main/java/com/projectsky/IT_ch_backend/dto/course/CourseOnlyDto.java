@@ -1,5 +1,8 @@
 package com.projectsky.IT_ch_backend.dto.course;
 
+import com.projectsky.IT_ch_backend.dto.schedule.ScheduleDto;
+import com.projectsky.IT_ch_backend.model.Schedule;
+
 public record CourseOnlyDto(
         String courseName,
         String location,
@@ -7,6 +10,7 @@ public record CourseOnlyDto(
         String refToGrades,
         DurationRange duration,
         String courseRole,
-        String teacherName
+        String teacherName,
+        Schedule schedule
 ) {
 }

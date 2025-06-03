@@ -7,9 +7,9 @@ import com.projectsky.IT_ch_backend.model.*;
 import com.projectsky.IT_ch_backend.repository.CourseRepository;
 import com.projectsky.IT_ch_backend.repository.CourseUserRepository;
 import com.projectsky.IT_ch_backend.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -57,6 +57,8 @@ public class CourseServiceImpl implements CourseService {
                 course.getEndModule()
         );
 
+        Schedule schedule = course.getSchedule();
+
         String courseRole = courseUser.getCourseRole().name();
         String teacherName = course.getCreator().getFullName();
 
@@ -67,7 +69,8 @@ public class CourseServiceImpl implements CourseService {
                 course.getRefToGrades(),
                 duration,
                 courseRole,
-                teacherName
+                teacherName,
+                schedule
         );
 
     }
@@ -93,7 +96,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<CourseShortDto> getAllShortCoursesForUser(Long userId) {
-        return courseUserRepository.findByUserId(userId)
+        return courseUserRepository.findAllByUserId(userId)
                 .stream()
                 .map(courseShortMapper::toDto)
                 .toList();
@@ -142,6 +145,19 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
+    public void deleteUserFromCourse(Long courseId, Long userId, Long currentUserId) {
+        CourseUser user = courseUserRepository.findByCourse_IdAndUser_id(courseId, userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(user.getUser().getId().equals(currentUserId) && user.getUser().getRole().equals(Role.TEACHER)) {
+            throw new RuntimeException("Teacher can't delete himself");
+        }
+
+        courseUserRepository.delete(user);
+    }
+
+    @Override
+    @Transactional
     public CourseOnlyDto updateCourse(Long courseId, CoursePatchRequest request) {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new RuntimeException("Course not found"));
@@ -160,13 +176,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     @Transactional
-    public List<CourseParticipantDto> updateCourseRole(Long courseId, Long userId, Role newRole) {
+    public List<CourseParticipantDto> updateCourseRole(Long userId, PatchRoleDto roleDto) {
         CourseUser courseUser = courseUserRepository
-                .findByCourse_IdAndUser_id(courseId, userId)
+                .findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("<UNK> <UNK> <UNK> <UNK> <UNK>"));
 
-        courseUser.setCourseRole(newRole);
+        courseUser.setCourseRole(roleDto.role());
 
-        return getParticipants(courseId);
+        return getParticipants(roleDto.courseId());
     }
 }

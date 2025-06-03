@@ -10,7 +10,12 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface HomeworkMapper {
 
+    @Mapping(source = "refToHomework", target = "refToHomework")
+    @Mapping(source = "refToSubmitForm", target = "refToSubmitForm")
     HomeworkDtoForStudent toStudentDto(Homework homework);
+
+    @Mapping(source = "refToHomework", target = "refToHomework")
+    @Mapping(source = "refToSolutionView", target = "refToSolutionView")
     HomeworkDtoForTeacher toTeacherDto(Homework homework);
 
     @Mapping(target = "id", ignore = true)

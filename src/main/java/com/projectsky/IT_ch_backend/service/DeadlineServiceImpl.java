@@ -36,7 +36,7 @@ public class DeadlineServiceImpl implements DeadlineService {
 
     @Override
     public List<DeadlineDto> getDeadlinesForUser(Long userId) {
-        List<CourseUser> courseUsers = courseUserRepository.findByUserId(userId);
+        List<CourseUser> courseUsers = courseUserRepository.findAllByUserId(userId);
 
         return courseUsers.stream()
                 .flatMap(cu -> cu.getCourse().getHomeworks().stream())

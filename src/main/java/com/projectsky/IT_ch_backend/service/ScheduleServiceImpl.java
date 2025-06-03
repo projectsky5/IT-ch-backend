@@ -55,7 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDate endDate = LocalDate.now().plusWeeks(12);
         Map<String, List<LessonDto>> lessonsByDate = new TreeMap<>();
 
-        List<CourseUser> courseUsers = courseUserRepository.findByUserId(userId);
+        List<CourseUser> courseUsers = courseUserRepository.findAllByUserId(userId);
 
         for(CourseUser courseUser : courseUsers) {
             Course course = courseUser.getCourse();

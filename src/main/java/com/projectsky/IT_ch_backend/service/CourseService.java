@@ -19,8 +19,10 @@ public interface CourseService {
 
     void deleteCourse(Long courseId);
 
+    void deleteUserFromCourse(Long courseId, Long userId, Long currentUserId); // добавил в параметр currentUserId
+
     CourseOnlyDto updateCourse(Long courseId, CoursePatchRequest request);
 
-    List<CourseParticipantDto> updateCourseRole(Long courseId, Long userId, Role newRole);
+    List<CourseParticipantDto> updateCourseRole(Long userId, PatchRoleDto roleDto);
 
 }

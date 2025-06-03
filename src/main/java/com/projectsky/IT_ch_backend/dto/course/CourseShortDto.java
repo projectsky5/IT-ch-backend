@@ -4,6 +4,7 @@ public record CourseShortDto(
         Long id,
         String courseName,
         String teacherName,
-        String courseRole
+        String courseRole,
+        DurationRange duration
 ) {
 }

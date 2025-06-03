@@ -9,9 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -37,9 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = header.substring(7);
         if (jwtTokenUtils.validateToken(token)) {
             String email = jwtTokenUtils.getEmailFromToken(token);
-            String role = jwtTokenUtils.getRoleFromToken(token);
+            String role = jwtTokenUtils.getRoleFromToken(token); // **
 
-            var auth = new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+
+            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+            var auth = new UsernamePasswordAuthenticationToken(email, null, authorities);
             auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
