@@ -28,7 +28,7 @@
  
 	•	Взаимодействие с микросервисом авторизации через REST API (RestTemplate).
 
-**IT-ch-auth**
+**IT-ch-auth** - https://github.com/projectsky5/IT-ch-Auth
 
 	•	Генерация и выдача JWT и Refresh-токенов;
  
